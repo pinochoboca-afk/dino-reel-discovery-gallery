@@ -6,6 +6,7 @@ import { HomeHero } from "@/components/dino/HomeHero";
 import { DinoRow } from "@/components/dino/DinoRow";
 import { DinoTile } from "@/components/dino/DinoTile";
 import { SiteFooter } from "@/components/dino/SiteFooter";
+import { MyListRow } from "@/components/dino/MyListRow";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -44,6 +45,7 @@ function Index() {
       <HomeHero featured={featured} />
 
       <main className="relative z-10 -mt-28 space-y-8 pb-16 md:space-y-10">
+        <MyListRow />
         <DinoRow title="Top 10 en Dinoflix" subtitle="Los más vistos de la semana" items={top10} variant="top10" />
 
         {categories.map((c, i) => (

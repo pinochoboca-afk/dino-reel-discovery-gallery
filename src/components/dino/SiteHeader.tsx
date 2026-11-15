@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { AccountMenu } from "@/components/account/AccountMenu";
+import { useAuth } from "@/hooks/use-auth";
 
 const links = [
   { label: "Inicio", hash: undefined },
@@ -11,6 +13,7 @@ const links = [
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const { user } = useAuth();
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
@@ -43,13 +46,18 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link
-          to="/"
-          hash="todos"
-          className="ml-auto rounded-full bg-primary px-4 py-1.5 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 md:hidden"
-        >
-          Ver todos
-        </Link>
+        <div className="ml-auto flex items-center gap-3">
+          {user && (
+            <Link
+              to="/mi-lista"
+              className="hidden rounded-full px-3 py-1.5 text-sm font-semibold text-foreground/90 transition-colors hover:bg-secondary hover:text-foreground sm:inline-block"
+              activeProps={{ className: "text-primary" }}
+            >
+              Mi lista
+            </Link>
+          )}
+          <AccountMenu />
+        </div>
       </div>
     </header>
   );

@@ -32,3 +32,5 @@ use the editor.
 ## Project rules
 - Dinosaur content (names, facts, categories, image imports) lives in `src/data/dinosaurs.ts`; pages read from it so adding a dinosaur needs no new route. Why: one source of truth for the catalog and detail pages.
 - Detail pages use the single dynamic route `/dinosaurio/$slug`. Why: every thumbnail links to the same template.
+- Accounts, favorites and comments use Lovable Cloud tables (`profiles`, `favorites`, `comments`) read from the browser client with RLS; hooks live in `src/lib/social.ts` and session state in `src/hooks/use-auth.tsx` (single `onAuthStateChange` listener). Why: one place for user data access and one auth subscriber.
+- Signed-in-only pages live under `src/routes/_authenticated/`; dinosaur pages stay public and show sign-in CTAs inline. Why: detail pages must stay shareable/SSR.

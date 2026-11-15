@@ -10,12 +10,35 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedMiListaRouteImport } from './routes/_authenticated/mi-lista'
 import { Route as DinosaurioSlugRouteImport } from './routes/dinosaurio.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedMiListaRoute = AuthenticatedMiListaRouteImport.update({
+  id: '/mi-lista',
+  path: '/mi-lista',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const DinosaurioSlugRoute = DinosaurioSlugRouteImport.update({
   id: '/dinosaurio/$slug',
@@ -25,27 +48,48 @@ const DinosaurioSlugRoute = DinosaurioSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/mi-lista': typeof AuthenticatedMiListaRoute
   '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/mi-lista': typeof AuthenticatedMiListaRoute
   '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/mi-lista': typeof AuthenticatedMiListaRoute
   '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dinosaurio/$slug'
+  fullPaths:
+    '/' | '/auth' | '/reset-password' | '/mi-lista' | '/dinosaurio/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dinosaurio/$slug'
-  id: '__root__' | '/' | '/dinosaurio/$slug'
+  to: '/' | '/auth' | '/reset-password' | '/mi-lista' | '/dinosaurio/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/mi-lista'
+    | '/dinosaurio/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   DinosaurioSlugRoute: typeof DinosaurioSlugRoute
 }
 
@@ -58,6 +102,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/mi-lista': {
+      id: '/_authenticated/mi-lista'
+      path: '/mi-lista'
+      fullPath: '/mi-lista'
+      preLoaderRoute: typeof AuthenticatedMiListaRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/dinosaurio/$slug': {
       id: '/dinosaurio/$slug'
       path: '/dinosaurio/$slug'
@@ -68,8 +140,22 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedMiListaRoute: typeof AuthenticatedMiListaRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedMiListaRoute: AuthenticatedMiListaRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   DinosaurioSlugRoute: DinosaurioSlugRoute,
 }
 export const routeTree = rootRouteImport

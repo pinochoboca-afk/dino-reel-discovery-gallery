@@ -201,3 +201,24 @@
   animation: progress 7s linear both;
   transform-origin: left;
 }
+
+/* Google's sign-in branding requires these exact colors (dark theme). */
+.google-auth-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background: #131314;
+  border: 1px solid #8e918f;
+  color: #e3e3e3;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  transition: opacity 150ms;
+}
+.google-auth-button:hover { opacity: 0.9; }
+.google-auth-button:disabled { opacity: 0.6; }

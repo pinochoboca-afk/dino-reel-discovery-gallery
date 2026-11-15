@@ -5,6 +5,8 @@ import { SiteHeader } from "@/components/dino/SiteHeader";
 import { DinoRow } from "@/components/dino/DinoRow";
 import { DietBadge } from "@/components/dino/DietBadge";
 import { SiteFooter } from "@/components/dino/SiteFooter";
+import { DinoActions } from "@/components/dino/DinoActions";
+import { DinoComments } from "@/components/dino/DinoComments";
 
 export const Route = createFileRoute("/dinosaurio/$slug")({
   loader: ({ params }) => {
@@ -93,6 +95,9 @@ function DinoPage() {
             <h1 className="mt-4 font-display text-6xl leading-[0.85] tracking-wide text-foreground md:text-9xl">{dino.name}</h1>
             <p className="mt-3 text-sm font-semibold uppercase tracking-[0.3em] text-primary">Significa “{dino.meaning}”</p>
             <p className="mt-4 text-lg text-foreground/90 md:text-xl">{dino.summary}</p>
+            <div className="mt-6">
+              <DinoActions dino={dino} />
+            </div>
           </div>
         </div>
       </section>
@@ -162,6 +167,8 @@ function DinoPage() {
           </div>
         </div>
       </main>
+
+      <DinoComments dino={dino} />
 
       <div className="space-y-8 pb-16">
         {related.length > 0 && <DinoRow title="Parecidos" subtitle={`Si te gustó el ${dino.name}`} items={related} />}
