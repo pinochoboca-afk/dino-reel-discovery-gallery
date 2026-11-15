@@ -71,6 +71,9 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-primary-glow: var(--primary-glow);
+  --color-carnivore: var(--carnivore);
+  --color-herbivore: var(--herbivore);
+  --color-piscivore: var(--piscivore);
   --font-display: "Bebas Neue", Impact, sans-serif;
   --font-sans: "Barlow", system-ui, sans-serif;
 }
@@ -86,6 +89,9 @@
   --primary: oklch(0.72 0.17 55);
   --primary-foreground: oklch(0.14 0.008 60);
   --primary-glow: oklch(0.82 0.15 75);
+  --carnivore: oklch(0.64 0.2 28);
+  --herbivore: oklch(0.72 0.15 145);
+  --piscivore: oklch(0.7 0.12 225);
   --secondary: oklch(0.26 0.012 60);
   --secondary-foreground: oklch(0.96 0.01 80);
   --muted: oklch(0.24 0.01 60);
@@ -150,6 +156,14 @@
 @utility shadow-glow {
   box-shadow: var(--shadow-glow);
 }
+@utility text-outline {
+  color: var(--background);
+  -webkit-text-stroke: 3px color-mix(in oklab, var(--foreground) 70%, transparent);
+  paint-order: stroke fill;
+}
+@utility bg-grain {
+  background-image: radial-gradient(ellipse at top, color-mix(in oklab, var(--primary) 10%, transparent), transparent 60%);
+}
 @utility scrollbar-none {
   scrollbar-width: none;
   &::-webkit-scrollbar {
@@ -170,4 +184,20 @@
 }
 @utility animate-slow-zoom {
   animation: slow-zoom 20s ease-out both;
+}
+
+@keyframes hero-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@utility animate-hero-fade {
+  animation: hero-fade 1s ease-out both;
+}
+@keyframes progress {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@utility animate-progress {
+  animation: progress 7s linear both;
+  transform-origin: left;
 }

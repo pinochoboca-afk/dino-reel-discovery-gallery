@@ -342,3 +342,9 @@ export function getDinosaur(slug: string) {
 export function byCategory(id: Category) {
   return dinosaurs.filter((d) => d.categories.includes(id));
 }
+
+/** "Cretácico superior · hace 68–66 millones de años" -> { era: "Cretácico superior", ago: "hace 68–66 millones de años" } */
+export function splitPeriod(period: string) {
+  const [era, ago = ""] = period.split(" · ");
+  return { era, ago };
+}

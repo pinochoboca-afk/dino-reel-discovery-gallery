@@ -1,9 +1,11 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { Info, Play } from "lucide-react";
-import { categories, byCategory, dinosaurs, getDinosaur } from "@/data/dinosaurs";
+import { useMemo, useState } from "react";
+import { createFileRoute } from "@tanstack/react-router";
+import { categories, byCategory, dinosaurs, getDinosaur, type Category } from "@/data/dinosaurs";
 import { SiteHeader } from "@/components/dino/SiteHeader";
+import { HomeHero } from "@/components/dino/HomeHero";
 import { DinoRow } from "@/components/dino/DinoRow";
-import { DinoCard } from "@/components/dino/DinoCard";
+import { DinoTile } from "@/components/dino/DinoTile";
+import { SiteFooter } from "@/components/dino/SiteFooter";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,73 +21,77 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const featuredSlugs = ["giganotosaurus", "tyrannosaurus-rex", "spinosaurus", "argentinosaurus", "triceratops"];
+const top10Slugs = ["tyrannosaurus-rex", "velociraptor", "triceratops", "spinosaurus", "brachiosaurus", "stegosaurus", "giganotosaurus", "pteranodon", "ankylosaurus", "mosasaurus"];
+const rowSubtitles: Partial<Record<Category, string>> = {
+  depredadores: "Dientes filosos y mordidas tremendas",
+  argentinos: "Encontrados en la Patagonia",
+  gigantes: "Los animales más grandes que pisaron la Tierra",
+  acorazados: "Defensas de hueso para no ser la cena",
+  "pico-de-pato": "Herbívoros que vivían en grupo",
+  "cielo-mar": "No eran dinosaurios, pero vivieron con ellos",
+};
+
 function Index() {
-  const featured = getDinosaur("giganotosaurus")!;
+  const featured = featuredSlugs.map((s) => getDinosaur(s)!).filter(Boolean);
+  const top10 = top10Slugs.map((s) => getDinosaur(s)!).filter(Boolean);
+  const [filter, setFilter] = useState<Category | "todos">("todos");
+  const shown = useMemo(() => (filter === "todos" ? dinosaurs : byCategory(filter)), [filter]);
+
   return (
     <div className="min-h-screen bg-background">
       <SiteHeader />
+      <HomeHero featured={featured} />
 
-      <section className="relative h-[85vh] min-h-[520px] w-full overflow-hidden">
-        <img
-          src={featured.image}
-          alt={featured.name}
-          width={1280}
-          height={720}
-          className="absolute inset-0 h-full w-full animate-slow-zoom object-cover"
-        />
-        <div className="absolute inset-0 bg-hero-side" />
-        <div className="absolute inset-0 bg-hero-bottom" />
-        <div className="relative mx-auto flex h-full max-w-[1600px] flex-col justify-end px-4 pb-24 md:px-10 md:pb-32">
-          <div className="max-w-xl animate-fade-up">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">Destacado de hoy</p>
-            <h1 className="mt-2 font-display text-6xl leading-[0.9] tracking-wide text-foreground md:text-8xl">
-              {featured.name}
-            </h1>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {featured.period} · {featured.place}
-            </p>
-            <p className="mt-4 text-base text-foreground/90 md:text-lg">{featured.summary}</p>
-            <div className="mt-6 flex gap-3">
-              <Link
-                to="/dinosaurio/$slug"
-                params={{ slug: featured.slug }}
-                className="inline-flex items-center gap-2 rounded-md bg-foreground px-6 py-3 font-semibold text-background transition-opacity hover:opacity-85"
-              >
-                <Play className="h-5 w-5 fill-current" /> Ver ahora
-              </Link>
-              <Link
-                to="/dinosaurio/$slug"
-                params={{ slug: featured.slug }}
-                className="inline-flex items-center gap-2 rounded-md bg-secondary/80 px-6 py-3 font-semibold text-secondary-foreground backdrop-blur transition-colors hover:bg-secondary"
-              >
-                <Info className="h-5 w-5" /> Más info
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+      <main className="relative z-10 -mt-28 space-y-8 pb-16 md:space-y-10">
+        <DinoRow title="Top 10 en Dinoflix" subtitle="Los más vistos de la semana" items={top10} variant="top10" />
 
-      <main className="relative z-10 -mt-20 space-y-4 pb-16">
-        <DinoRow title="Populares en Dinoflix" items={dinosaurs.slice(0, 10)} />
-        {categories.map((c) => (
-          <DinoRow key={c.id} title={c.title} items={byCategory(c.id)} />
+        {categories.map((c, i) => (
+          <DinoRow
+            key={c.id}
+            id={c.id}
+            title={c.title}
+            subtitle={rowSubtitles[c.id]}
+            items={byCategory(c.id)}
+            variant={i % 2 === 1 ? "poster" : "landscape"}
+          />
         ))}
 
-        <section id="todos" className="scroll-mt-20 px-4 pt-8 md:px-10">
-          <h2 className="mb-5 font-display text-3xl tracking-wide text-foreground md:text-4xl">
-            Todos los dinosaurios <span className="text-primary">({dinosaurs.length})</span>
-          </h2>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
-            {dinosaurs.map((d) => (
-              <DinoCard key={d.slug} dino={d} />
-            ))}
+        <section id="todos" className="scroll-mt-20 px-4 pt-10 md:px-10">
+          <div className="rounded-2xl bg-card/40 bg-grain p-4 ring-1 ring-border md:p-8">
+            <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em] text-primary">Catálogo completo</p>
+                <h2 className="mt-1 font-display text-4xl tracking-wide text-foreground md:text-5xl">
+                  Todos los dinosaurios <span className="text-primary">({shown.length})</span>
+                </h2>
+              </div>
+              <div className="scrollbar-none -mx-4 flex gap-2 overflow-x-auto px-4 md:mx-0 md:flex-wrap md:justify-end md:px-0">
+                {[{ id: "todos" as const, title: "Todos" }, ...categories].map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => setFilter(c.id)}
+                    className={`shrink-0 rounded-full px-4 py-1.5 text-sm font-medium ring-1 transition-colors ${
+                      filter === c.id
+                        ? "bg-primary text-primary-foreground ring-primary"
+                        : "bg-secondary/60 text-muted-foreground ring-border hover:text-foreground"
+                    }`}
+                  >
+                    {c.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {shown.map((d) => (
+                <DinoTile key={d.slug} dino={d} />
+              ))}
+            </div>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-border px-4 py-8 text-center text-sm text-muted-foreground md:px-10">
-        Dinoflix · Las imágenes son recreaciones artísticas.
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
