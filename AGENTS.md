@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Dinosaur content (names, facts, categories, image imports) lives in `src/data/dinosaurs.ts`; pages read from it so adding a dinosaur needs no new route. Why: one source of truth for the catalog and detail pages.
+- Detail pages use the single dynamic route `/dinosaurio/$slug`. Why: every thumbnail links to the same template.

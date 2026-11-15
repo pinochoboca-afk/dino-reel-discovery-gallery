@@ -10,33 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DinosaurioSlugRouteImport } from './routes/dinosaurio.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DinosaurioSlugRoute = DinosaurioSlugRouteImport.update({
+  id: '/dinosaurio/$slug',
+  path: '/dinosaurio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dinosaurio/$slug': typeof DinosaurioSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/dinosaurio/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/dinosaurio/$slug'
+  id: '__root__' | '/' | '/dinosaurio/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DinosaurioSlugRoute: typeof DinosaurioSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dinosaurio/$slug': {
+      id: '/dinosaurio/$slug'
+      path: '/dinosaurio/$slug'
+      fullPath: '/dinosaurio/$slug'
+      preLoaderRoute: typeof DinosaurioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DinosaurioSlugRoute: DinosaurioSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
