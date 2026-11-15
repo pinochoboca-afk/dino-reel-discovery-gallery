@@ -28,7 +28,7 @@ export function HomeHero({ featured }: { featured: Dinosaur[] }) {
       <div className="absolute inset-0 bg-hero-side" />
       <div className="absolute inset-0 bg-hero-bottom" />
 
-      <div className="relative mx-auto flex h-full max-w-[1600px] items-end px-4 pb-32 md:px-10 md:pb-40">
+      <div className="relative flex h-full items-end px-4 pb-32 md:px-10 md:pb-40">
         <div key={dino.slug} className="max-w-xl animate-fade-up">
           <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary">
             <span className="h-px w-8 bg-primary" /> Destacado · {index + 1} de {featured.length}

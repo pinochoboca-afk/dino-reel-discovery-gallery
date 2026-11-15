@@ -4,7 +4,7 @@ import { categories, dinosaurs } from "@/data/dinosaurs";
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card/40">
-      <div className="mx-auto grid max-w-[1600px] gap-8 px-4 py-12 md:grid-cols-[1.5fr_1fr_1fr] md:px-10">
+      <div className="grid gap-8 px-4 py-12 md:grid-cols-[1.5fr_1fr_1fr] md:px-10">
         <div>
           <p className="font-display text-4xl tracking-wider text-primary">DINOFLIX</p>
           <p className="mt-2 max-w-sm text-sm text-muted-foreground">

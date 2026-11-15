@@ -26,7 +26,7 @@ export function SiteHeader() {
           : "bg-gradient-to-b from-background/90 to-transparent"
       }`}
     >
-      <div className="mx-auto flex h-16 max-w-[1600px] items-center gap-8 px-4 md:px-10">
+      <div className="flex h-16 items-center gap-8 px-4 md:px-10">
         <Link to="/" className="flex items-baseline gap-1 font-display text-3xl tracking-wider text-primary md:text-4xl">
           DINOFLIX
           <span className="hidden h-2 w-2 rounded-full bg-primary-glow sm:inline-block" />

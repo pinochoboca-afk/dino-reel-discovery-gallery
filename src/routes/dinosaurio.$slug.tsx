@@ -69,7 +69,7 @@ function DinoPage() {
         />
         <div className="absolute inset-0 bg-hero-side" />
         <div className="absolute inset-0 bg-hero-bottom" />
-        <div className="relative mx-auto flex h-full max-w-[1600px] flex-col px-4 pb-16 pt-20 md:px-10 md:pb-24">
+        <div className="relative flex h-full flex-col px-4 pb-16 pt-20 md:px-10 md:pb-24">
           <Link
             to="/"
             className="inline-flex w-fit items-center gap-2 rounded-full bg-background/50 px-4 py-2 text-sm font-medium text-foreground/90 ring-1 ring-border backdrop-blur transition-colors hover:bg-background/80"
@@ -97,7 +97,7 @@ function DinoPage() {
         </div>
       </section>
 
-      <main className="relative z-10 mx-auto -mt-12 max-w-[1600px] px-4 pb-12 md:px-10">
+      <main className="relative z-10 -mt-12 px-4 pb-12 md:px-10">
         <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {stats.map(({ icon: Icon, label, value, hint }, i) => (
             <div
